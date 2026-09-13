@@ -2,7 +2,7 @@
 /**
  * Plugin Name: GitHub Actions Visual Test
  * Description: Provides a simple visual page for confirming file deployments.
- * Version: 1.1.0
+ * Version: 1.2.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Render the visual deployment marker.
  */
 function wordpress_flow_render_visual_test() {
-	$status = 'GITHUB ACTION DEPLOYED';
-	$detail = 'Success! This version reached WordPress through the GitHub Actions deployment.';
+	$status = 'GITHUB ACTION DEPLOYED · UPDATE 2';
+	$detail = 'The second develop-branch change was validated and deployed automatically to staging.';
 
 	ob_start();
 	?>
@@ -24,10 +24,10 @@ function wordpress_flow_render_visual_test() {
 			max-width: 920px;
 			margin: 72px auto;
 			padding: 56px;
-			border: 1px solid #bbf7d0;
+			border: 1px solid #bfdbfe;
 			border-radius: 24px;
-			background: linear-gradient(145deg, #f0fdf4 0%, #ffffff 70%);
-			box-shadow: 0 24px 70px rgba(20, 83, 45, 0.12);
+			background: linear-gradient(145deg, #eff6ff 0%, #ffffff 70%);
+			box-shadow: 0 24px 70px rgba(30, 64, 175, 0.12);
 			color: #292524;
 			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 		}
@@ -40,7 +40,7 @@ function wordpress_flow_render_visual_test() {
 			display: inline-block;
 			padding: 8px 14px;
 			border-radius: 999px;
-			background: #16a34a;
+			background: #2563eb;
 			color: #ffffff;
 			font-size: 13px;
 			font-weight: 800;
@@ -107,7 +107,7 @@ function wordpress_flow_render_visual_test() {
 		<div class="wordpress-flow-test__grid">
 			<div class="wordpress-flow-test__card">
 				<span class="wordpress-flow-test__label">Current stage</span>
-				<span class="wordpress-flow-test__value">Workflow v2</span>
+				<span class="wordpress-flow-test__value">Workflow v3</span>
 			</div>
 			<div class="wordpress-flow-test__card">
 				<span class="wordpress-flow-test__label">Target workflow</span>

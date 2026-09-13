@@ -1,0 +1,73 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: true
+
+jobs:
+  validate-and-deploy:
+    name: Validate and deploy to staging
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+
+    env:
+      WORDPRESS_HOST: ${{ vars.WORDPRESS_HOST }}
+      WORDPRESS_USER: ${{ vars.WORDPRESS_USER }}
+      STAGING_PATH: ${{ vars.STAGING_PATH }}
+      STAGING_URL: ${{ vars.STAGING_URL }}
+      STAGING_HTTP_USER: ${{ vars.STAGING_HTTP_USER }}
+
+    steps:
+      - name: Check out develop
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Validate PHP syntax
+        run: find wp-content -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.WORDPRESS_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.WORDPRESS_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/wordpress_deploy"
+          chmod 600 "$HOME/.ssh/wordpress_deploy"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+
+      - name: Deploy develop to staging
+        run: |
+          SSH_OPTIONS=(-i "$HOME/.ssh/wordpress_deploy" -o IdentitiesOnly=yes -o BatchMode=yes)
+          ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
+            "test -d '${STAGING_PATH}/wp-content/themes/hello-elementor' && install -d -m 2775 '${STAGING_PATH}/wp-content/mu-plugins'"
+          rsync -az --delete --delay-updates \
+            -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
+            wp-content/themes/hello-elementor/ \
+            "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/themes/hello-elementor/"
+          rsync -az --delay-updates \
+            -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
+            wp-content/mu-plugins/github-actions-visual-test.php \
+            "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/mu-plugins/github-actions-visual-test.php"
+          ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
+            "wp --path='${STAGING_PATH}' cache flush"
+
+      - name: Verify staging marker
+        env:
+          STAGING_HTTP_PASSWORD: ${{ secrets.STAGING_HTTP_PASSWORD }}
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            --user "${STAGING_HTTP_USER}:${STAGING_HTTP_PASSWORD}" \
+            "${STAGING_URL}/?page_id=6" | grep -q 'GITHUB ACTION DEPLOYED'
+          echo "Staging deployment verified at ${STAGING_URL}/?page_id=6"

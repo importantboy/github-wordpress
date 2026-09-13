@@ -1,0 +1,83 @@
+name: Deploy Live (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type deploy-live to confirm the production deployment
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-live
+  cancel-in-progress: false
+
+jobs:
+  validate-and-deploy:
+    name: Validate and deploy main to live
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ vars.LIVE_URL }}
+
+    env:
+      WORDPRESS_HOST: ${{ vars.WORDPRESS_HOST }}
+      WORDPRESS_USER: ${{ vars.WORDPRESS_USER }}
+      LIVE_PATH: ${{ vars.LIVE_PATH }}
+      LIVE_URL: ${{ vars.LIVE_URL }}
+      DEPLOY_CONFIRMATION: ${{ inputs.confirmation }}
+
+    steps:
+      - name: Require main and explicit confirmation
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "Live deployment must be run from the main branch."
+            exit 1
+          fi
+          if [[ "$DEPLOY_CONFIRMATION" != "deploy-live" ]]; then
+            echo "Confirmation must exactly match: deploy-live"
+            exit 1
+          fi
+
+      - name: Check out main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Validate PHP syntax
+        run: find wp-content -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.WORDPRESS_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.WORDPRESS_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/wordpress_deploy"
+          chmod 600 "$HOME/.ssh/wordpress_deploy"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+
+      - name: Deploy main to live
+        run: |
+          SSH_OPTIONS=(-i "$HOME/.ssh/wordpress_deploy" -o IdentitiesOnly=yes -o BatchMode=yes)
+          REMOTE_RELEASE_PATH="/home/${WORDPRESS_USER}/github-wordpress-live-release"
+          ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
+            "test -d '${LIVE_PATH}/wp-content/themes/hello-elementor' && install -d -m 700 '${REMOTE_RELEASE_PATH}/theme' '${REMOTE_RELEASE_PATH}/mu-plugins'"
+          rsync -az --delete --delay-updates \
+            -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
+            wp-content/themes/hello-elementor/ \
+            "${WORDPRESS_USER}@${WORDPRESS_HOST}:${REMOTE_RELEASE_PATH}/theme/"
+          rsync -az --delay-updates \
+            -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
+            wp-content/mu-plugins/github-actions-visual-test.php \
+            "${WORDPRESS_USER}@${WORDPRESS_HOST}:${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php"
+          ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
+            "sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor/' && sudo -n install -o admin -g www-data -m 664 '${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php' '${LIVE_PATH}/wp-content/mu-plugins/github-actions-visual-test.php' && wp --path='${LIVE_PATH}' cache flush"
+
+      - name: Verify live marker
+        run: |
+          curl --insecure --fail --silent --show-error --retry 5 --retry-delay 2 \
+            "${LIVE_URL}/?page_id=6" | grep -q 'GITHUB ACTION DEPLOYED'
+          echo "Live deployment verified at ${LIVE_URL}/?page_id=6"

@@ -27,6 +27,7 @@ jobs:
       WORDPRESS_USER: ${{ vars.WORDPRESS_USER }}
       STAGING_PATH: ${{ vars.STAGING_PATH }}
       STAGING_URL: ${{ vars.STAGING_URL }}
+      STAGING_HTTP_USER: ${{ vars.STAGING_HTTP_USER }}
 
     steps:
       - name: Check out develop
@@ -63,8 +64,10 @@ jobs:
             "wp --path='${STAGING_PATH}' cache flush"
 
       - name: Verify staging marker
+        env:
+          STAGING_HTTP_PASSWORD: ${{ secrets.STAGING_HTTP_PASSWORD }}
         run: |
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            --user "${STAGING_HTTP_USER}:${STAGING_HTTP_PASSWORD}" \
             "${STAGING_URL}/?page_id=6" | grep -q 'GITHUB ACTION DEPLOYED'
           echo "Staging deployment verified at ${STAGING_URL}/?page_id=6"
-

@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"color": {
+			"palette": [
+				{ "slug": "forest", "color": "#113c34", "name": "Foundation Forest" },
+				{ "slug": "deep-forest", "color": "#092b25", "name": "Deep Forest" },
+				{ "slug": "saffron", "color": "#ef8d32", "name": "Foundation Saffron" },
+				{ "slug": "cream", "color": "#f8f3e9", "name": "Warm Cream" },
+				{ "slug": "paper", "color": "#fffdf8", "name": "Paper" }
+			]
+		},
+		"layout": {
+			"contentSize": "800px",
+			"wideSize": "1200px"
+		},
+		"typography": {
+			"fluid": true
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "#fffdf8",
+			"text": "#16302a"
+		},
+		"typography": {
+			"fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+			"lineHeight": "1.65"
+		}
+	}
+}

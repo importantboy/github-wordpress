@@ -51,17 +51,21 @@ jobs:
         run: |
           SSH_OPTIONS=(-i "$HOME/.ssh/wordpress_deploy" -o IdentitiesOnly=yes -o BatchMode=yes)
           ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
-            "test -d '${STAGING_PATH}/wp-content/themes/hello-elementor' && install -d -m 2775 '${STAGING_PATH}/wp-content/mu-plugins'"
+            "test -d '${STAGING_PATH}/wp-content/themes/hello-elementor' && install -d -m 2775 '${STAGING_PATH}/wp-content/themes/hello-elementor-child' '${STAGING_PATH}/wp-content/mu-plugins'"
           rsync -az --delete --delay-updates \
             -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
             wp-content/themes/hello-elementor/ \
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/themes/hello-elementor/"
+          rsync -az --delete --delay-updates \
+            -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
+            wp-content/themes/hello-elementor-child/ \
+            "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/themes/hello-elementor-child/"
           rsync -az --delay-updates \
             -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
             wp-content/mu-plugins/github-actions-visual-test.php \
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/mu-plugins/github-actions-visual-test.php"
           ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
-            "wp --path='${STAGING_PATH}' cache flush"
+            "wp --path='${STAGING_PATH}' theme activate hello-elementor-child && wp --path='${STAGING_PATH}' option update blogname 'Guru Nanak Gitaa Kailash Memorial Foundation' && wp --path='${STAGING_PATH}' option update blogdescription 'Bridging Innovation and Execution with Empathy.' && wp --path='${STAGING_PATH}' cache flush"
 
       - name: Verify staging marker
         env:
@@ -69,5 +73,5 @@ jobs:
         run: |
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             --user "${STAGING_HTTP_USER}:${STAGING_HTTP_PASSWORD}" \
-            "${STAGING_URL}/?page_id=6" | grep -q 'GITHUB ACTION DEPLOYED'
-          echo "Staging deployment verified at ${STAGING_URL}/?page_id=6"
+            "${STAGING_URL}/" | grep -q 'data-gk-site="foundation-redesign-v1"'
+          echo "Staging homepage deployment verified at ${STAGING_URL}/"

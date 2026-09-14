@@ -64,7 +64,7 @@ jobs:
           SSH_OPTIONS=(-i "$HOME/.ssh/wordpress_deploy" -o IdentitiesOnly=yes -o BatchMode=yes)
           REMOTE_RELEASE_PATH="/home/${WORDPRESS_USER}/github-wordpress-live-release"
           ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
-            "test -d '${LIVE_PATH}/wp-content/themes/hello-elementor' && install -d -m 700 '${REMOTE_RELEASE_PATH}/theme' '${REMOTE_RELEASE_PATH}/child-theme' '${REMOTE_RELEASE_PATH}/mu-plugins'"
+            "test -d '${LIVE_PATH}/wp-content/themes/hello-elementor' && install -d -m 700 '${REMOTE_RELEASE_PATH}/theme' '${REMOTE_RELEASE_PATH}/child-theme' '${REMOTE_RELEASE_PATH}/config' '${REMOTE_RELEASE_PATH}/mu-plugins'"
           rsync -az --delete --delay-updates \
             -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
             wp-content/themes/hello-elementor/ \
@@ -75,10 +75,14 @@ jobs:
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${REMOTE_RELEASE_PATH}/child-theme/"
           rsync -az --delay-updates \
             -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
+            deployment/wordpress.htaccess \
+            "${WORDPRESS_USER}@${WORDPRESS_HOST}:${REMOTE_RELEASE_PATH}/config/wordpress.htaccess"
+          rsync -az --delay-updates \
+            -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
             wp-content/mu-plugins/github-actions-visual-test.php \
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php"
           ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
-            "sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor/' && sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/child-theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor-child/' && sudo -n install -o admin -g www-data -m 664 '${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php' '${LIVE_PATH}/wp-content/mu-plugins/github-actions-visual-test.php' && wp --path='${LIVE_PATH}' theme activate hello-elementor-child && wp --path='${LIVE_PATH}' eval-file '${LIVE_PATH}/wp-content/themes/hello-elementor-child/inc/sync-site-pages.php' && wp --path='${LIVE_PATH}' cache flush"
+            "sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor/' && sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/child-theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor-child/' && sudo -n install -o admin -g www-data -m 664 '${REMOTE_RELEASE_PATH}/config/wordpress.htaccess' '${LIVE_PATH}/.htaccess' && sudo -n install -o admin -g www-data -m 664 '${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php' '${LIVE_PATH}/wp-content/mu-plugins/github-actions-visual-test.php' && wp --path='${LIVE_PATH}' theme activate hello-elementor-child && wp --path='${LIVE_PATH}' eval-file '${LIVE_PATH}/wp-content/themes/hello-elementor-child/inc/sync-site-pages.php' && wp --path='${LIVE_PATH}' cache flush"
 
       - name: Verify live marker
         run: |

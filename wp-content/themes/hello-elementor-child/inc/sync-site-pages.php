@@ -84,7 +84,8 @@ if ( isset( $gk_created_pages['home'] ) ) {
 
 update_option( 'blogname', 'Guru Nanak Gitaa Kailash Memorial Foundation' );
 update_option( 'blogdescription', 'Bridging Innovation and Execution with Empathy.' );
-flush_rewrite_rules( false );
+update_option( 'permalink_structure', '/%postname%/' );
+flush_rewrite_rules( true );
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	WP_CLI::success( sprintf( 'Synced %d foundation pages.', count( $gk_created_pages ) ) );

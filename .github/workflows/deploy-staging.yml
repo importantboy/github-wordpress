@@ -62,6 +62,10 @@ jobs:
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/themes/hello-elementor-child/"
           rsync -az --delay-updates \
             -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
+            deployment/wordpress.htaccess \
+            "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/.htaccess"
+          rsync -az --delay-updates \
+            -e "ssh -i $HOME/.ssh/wordpress_deploy -o IdentitiesOnly=yes -o BatchMode=yes" \
             wp-content/mu-plugins/github-actions-visual-test.php \
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/mu-plugins/github-actions-visual-test.php"
           ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \

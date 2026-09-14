@@ -19,8 +19,8 @@ get_header( 'charity' );
 				<h1 class="gk-display" id="gk-hero-title">Where care becomes a <em>path forward.</em></h1>
 				<p class="gk-hero__lead">We bring practical support, trusted partnerships, and human compassion to communities across North India—so every child, student, and family can move forward with dignity.</p>
 				<div class="gk-actions">
-					<a class="gk-button gk-button--primary" href="#work">Explore our work <span class="gk-arrow" aria-hidden="true">↗</span></a>
-					<a class="gk-button gk-button--ghost" href="#donate">Support a cause</a>
+					<a class="gk-button gk-button--primary" href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>">Explore our work <span class="gk-arrow" aria-hidden="true">↗</span></a>
+					<a class="gk-button gk-button--ghost" href="<?php echo esc_url( gk_child_page_url( 'donate' ) ); ?>">Support a cause</a>
 				</div>
 			</div>
 
@@ -84,7 +84,7 @@ get_header( 'charity' );
 					<div class="gk-program-card__body">
 						<h3>Child welfare</h3>
 						<p>Safe accommodation, regular education, healthcare, skill development, and preparation for an independent, dignified adulthood.</p>
-						<a class="gk-program-card__link" href="#impact">See the 2030 goal <span aria-hidden="true">→</span></a>
+						<a class="gk-program-card__link" href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>#child-welfare">Explore the program <span aria-hidden="true">→</span></a>
 					</div>
 				</article>
 
@@ -96,7 +96,7 @@ get_header( 'charity' );
 					<div class="gk-program-card__body">
 						<h3>Accessible healthcare</h3>
 						<p>Preventive screenings, primary care, maternal and child health, mental health support, and pathways to specialist treatment.</p>
-						<a class="gk-program-card__link" href="#stories">See work in the field <span aria-hidden="true">→</span></a>
+						<a class="gk-program-card__link" href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>#healthcare">Explore the program <span aria-hidden="true">→</span></a>
 					</div>
 				</article>
 
@@ -108,7 +108,7 @@ get_header( 'charity' );
 					<div class="gk-program-card__body">
 						<h3>Education &amp; skills</h3>
 						<p>Digital learning, STEM training, scholarships, school partnerships, and structured academic support for future-ready students.</p>
-						<a class="gk-program-card__link" href="#impact">See the 2030 goal <span aria-hidden="true">→</span></a>
+						<a class="gk-program-card__link" href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>#education">Explore the program <span aria-hidden="true">→</span></a>
 					</div>
 				</article>
 			</div>

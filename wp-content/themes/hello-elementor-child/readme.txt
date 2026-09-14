@@ -2,7 +2,7 @@
 
 A custom child theme for Guru Nanak Gitaa Kailash Memorial Foundation.
 
-The theme keeps Hello Elementor as its parent while adding a complete, responsive foundation homepage, accessible navigation, program sections, impact goals, field stories, gallery, and donation information.
+The theme keeps Hello Elementor as its parent while adding a complete responsive homepage, routed About, Our Work, Impact, Gallery, and Donate pages, accessible navigation, self-hosted typography, program sections, impact goals, field stories, and donation information.
 
 == Requirements ==
 

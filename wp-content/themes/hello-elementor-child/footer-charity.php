@@ -23,10 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div>
 				<h2 class="gk-footer__heading">Explore</h2>
 				<nav class="gk-footer__links" aria-label="<?php esc_attr_e( 'Footer navigation', 'hello-elementor-child' ); ?>">
-					<a href="<?php echo esc_url( gk_child_home_section_url( 'about' ) ); ?>">About us</a>
-					<a href="<?php echo esc_url( gk_child_home_section_url( 'work' ) ); ?>">Our work</a>
-					<a href="<?php echo esc_url( gk_child_home_section_url( 'impact' ) ); ?>">2030 goals</a>
-					<a href="<?php echo esc_url( gk_child_home_section_url( 'donate' ) ); ?>">Donate</a>
+					<a href="<?php echo esc_url( gk_child_page_url( 'about' ) ); ?>">About us</a>
+					<a href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>">Our work</a>
+					<a href="<?php echo esc_url( gk_child_page_url( 'impact' ) ); ?>">2030 goals</a>
+					<a href="<?php echo esc_url( gk_child_page_url( 'gallery' ) ); ?>">Gallery</a>
+					<a href="<?php echo esc_url( gk_child_page_url( 'donate' ) ); ?>">Donate</a>
 				</nav>
 			</div>
 

@@ -41,12 +41,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</button>
 
 		<nav class="gk-nav" id="gk-primary-nav" aria-label="<?php esc_attr_e( 'Primary navigation', 'hello-elementor-child' ); ?>" data-nav>
-			<a href="<?php echo esc_url( gk_child_home_section_url( 'about' ) ); ?>">About</a>
-			<a href="<?php echo esc_url( gk_child_home_section_url( 'work' ) ); ?>">Our work</a>
-			<a href="<?php echo esc_url( gk_child_home_section_url( 'impact' ) ); ?>">2030 goals</a>
-			<a href="<?php echo esc_url( gk_child_home_section_url( 'stories' ) ); ?>">Field notes</a>
-			<a href="<?php echo esc_url( gk_child_home_section_url( 'gallery' ) ); ?>">Gallery</a>
-			<a class="gk-nav__cta" href="<?php echo esc_url( gk_child_home_section_url( 'donate' ) ); ?>">Donate</a>
+			<a<?php echo is_front_page() ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
+			<a<?php echo is_page( 'about' ) ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( gk_child_page_url( 'about' ) ); ?>">About</a>
+			<a<?php echo is_page( 'our-work' ) ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>">Our work</a>
+			<a<?php echo is_page( 'impact' ) ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( gk_child_page_url( 'impact' ) ); ?>">Impact</a>
+			<a<?php echo is_page( 'gallery' ) ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( gk_child_page_url( 'gallery' ) ); ?>">Gallery</a>
+			<a class="gk-nav__cta"<?php echo is_page( 'donate' ) ? ' aria-current="page"' : ''; ?> href="<?php echo esc_url( gk_child_page_url( 'donate' ) ); ?>">Donate</a>
 		</nav>
 	</div>
 </header>

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GK_CHILD_THEME_VERSION', '1.0.0' );
+define( 'GK_CHILD_THEME_VERSION', '1.1.0' );
 
 /**
  * Load the child theme styles and small interaction script.
@@ -19,6 +19,13 @@ function gk_child_enqueue_assets() {
 		'gk-charity-theme',
 		get_stylesheet_uri(),
 		array( 'hello-elementor-theme-style' ),
+		GK_CHILD_THEME_VERSION
+	);
+
+	wp_enqueue_style(
+		'gk-charity-pages',
+		get_stylesheet_directory_uri() . '/assets/css/pages.css',
+		array( 'gk-charity-theme' ),
 		GK_CHILD_THEME_VERSION
 	);
 
@@ -56,6 +63,16 @@ function gk_child_home_section_url( $section ) {
 }
 
 /**
+ * Build a safe URL for one of the foundation's WordPress pages.
+ *
+ * @param string $slug Page slug.
+ * @return string
+ */
+function gk_child_page_url( $slug ) {
+	return home_url( '/' . trim( $slug, '/' ) . '/' );
+}
+
+/**
  * Return the URL for a bundled theme image.
  *
  * @param string $filename Image filename.
@@ -75,11 +92,27 @@ function gk_child_setup() {
 add_action( 'after_setup_theme', 'gk_child_setup', 20 );
 
 /**
- * Add a useful homepage description when no SEO plugin is managing one.
+ * Replace the parent theme's basic meta description with page-aware copy.
  */
-function gk_child_home_meta_description() {
+function gk_child_replace_parent_description() {
+	remove_action( 'wp_head', 'hello_elementor_add_description_meta_tag' );
+}
+add_action( 'after_setup_theme', 'gk_child_replace_parent_description', 99 );
+
+/**
+ * Add a useful description for the homepage and routed foundation pages.
+ */
+function gk_child_meta_description() {
+	$description = '';
+
 	if ( is_front_page() ) {
-		echo '<meta name="description" content="' . esc_attr__( 'Guru Nanak Gitaa Kailash Memorial Foundation advances child welfare, accessible healthcare, education, and community relief across North India.', 'hello-elementor-child' ) . '">' . "\n";
+		$description = __( 'Guru Nanak Gitaa Kailash Memorial Foundation advances child welfare, accessible healthcare, education, and community relief across North India.', 'hello-elementor-child' );
+	} elseif ( is_page() ) {
+		$description = get_the_excerpt();
+	}
+
+	if ( $description ) {
+		echo '<meta name="description" content="' . esc_attr( wp_strip_all_tags( $description ) ) . '">' . "\n";
 	}
 }
-add_action( 'wp_head', 'gk_child_home_meta_description', 1 );
+add_action( 'wp_head', 'gk_child_meta_description', 1 );

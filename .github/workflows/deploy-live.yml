@@ -78,10 +78,14 @@ jobs:
             wp-content/mu-plugins/github-actions-visual-test.php \
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php"
           ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
-            "sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor/' && sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/child-theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor-child/' && sudo -n install -o admin -g www-data -m 664 '${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php' '${LIVE_PATH}/wp-content/mu-plugins/github-actions-visual-test.php' && wp --path='${LIVE_PATH}' theme activate hello-elementor-child && wp --path='${LIVE_PATH}' option update blogname 'Guru Nanak Gitaa Kailash Memorial Foundation' && wp --path='${LIVE_PATH}' option update blogdescription 'Bridging Innovation and Execution with Empathy.' && wp --path='${LIVE_PATH}' cache flush"
+            "sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor/' && sudo -n rsync -a --delete --delay-updates --chown=www-data:www-data '${REMOTE_RELEASE_PATH}/child-theme/' '${LIVE_PATH}/wp-content/themes/hello-elementor-child/' && sudo -n install -o admin -g www-data -m 664 '${REMOTE_RELEASE_PATH}/mu-plugins/github-actions-visual-test.php' '${LIVE_PATH}/wp-content/mu-plugins/github-actions-visual-test.php' && wp --path='${LIVE_PATH}' theme activate hello-elementor-child && wp --path='${LIVE_PATH}' eval-file '${LIVE_PATH}/wp-content/themes/hello-elementor-child/inc/sync-site-pages.php' && wp --path='${LIVE_PATH}' cache flush"
 
       - name: Verify live marker
         run: |
           curl --insecure --fail --silent --show-error --retry 5 --retry-delay 2 \
             "${LIVE_URL}/" | grep -q 'data-gk-site="foundation-redesign-v1"'
+          for page in about our-work impact gallery donate; do
+            curl --insecure --fail --silent --show-error --retry 3 --retry-delay 1 \
+              "${LIVE_URL}/${page}/" | grep -q 'data-gk-page'
+          done
           echo "Live homepage deployment verified at ${LIVE_URL}/"

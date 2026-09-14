@@ -65,7 +65,7 @@ jobs:
             wp-content/mu-plugins/github-actions-visual-test.php \
             "${WORDPRESS_USER}@${WORDPRESS_HOST}:${STAGING_PATH}/wp-content/mu-plugins/github-actions-visual-test.php"
           ssh "${SSH_OPTIONS[@]}" "${WORDPRESS_USER}@${WORDPRESS_HOST}" \
-            "wp --path='${STAGING_PATH}' theme activate hello-elementor-child && wp --path='${STAGING_PATH}' option update blogname 'Guru Nanak Gitaa Kailash Memorial Foundation' && wp --path='${STAGING_PATH}' option update blogdescription 'Bridging Innovation and Execution with Empathy.' && wp --path='${STAGING_PATH}' cache flush"
+            "wp --path='${STAGING_PATH}' theme activate hello-elementor-child && wp --path='${STAGING_PATH}' eval-file '${STAGING_PATH}/wp-content/themes/hello-elementor-child/inc/sync-site-pages.php' && wp --path='${STAGING_PATH}' cache flush"
 
       - name: Verify staging marker
         env:
@@ -74,4 +74,9 @@ jobs:
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             --user "${STAGING_HTTP_USER}:${STAGING_HTTP_PASSWORD}" \
             "${STAGING_URL}/" | grep -q 'data-gk-site="foundation-redesign-v1"'
+          for page in about our-work impact gallery donate; do
+            curl --fail --silent --show-error --retry 3 --retry-delay 1 \
+              --user "${STAGING_HTTP_USER}:${STAGING_HTTP_PASSWORD}" \
+              "${STAGING_URL}/${page}/" | grep -q 'data-gk-page'
+          done
           echo "Staging homepage deployment verified at ${STAGING_URL}/"

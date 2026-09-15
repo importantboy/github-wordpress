@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GK_CHILD_THEME_VERSION', '1.2.1' );
+define( 'GK_CHILD_THEME_VERSION', '1.2.2' );
 
 /**
  * Load the child theme styles and small interaction script.
@@ -80,6 +80,36 @@ function gk_child_page_url( $slug ) {
  */
 function gk_child_image_url( $filename ) {
 	return get_stylesheet_directory_uri() . '/assets/images/' . ltrim( $filename, '/' );
+}
+
+/**
+ * Decide whether a routed page should render its Elementor document.
+ *
+ * The coded page remains the public fallback until Elementor has saved actual
+ * document data. Authenticated Elementor previews always receive the standard
+ * WordPress content area required by the editor.
+ *
+ * @param int $post_id Page ID.
+ * @return bool
+ */
+function gk_child_uses_elementor_document( $post_id ) {
+	$post_id = absint( $post_id );
+
+	if ( ! $post_id ) {
+		return false;
+	}
+
+	$preview_id = isset( $_GET['elementor-preview'] ) ? absint( wp_unslash( $_GET['elementor-preview'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+	if ( $preview_id === $post_id && current_user_can( 'edit_post', $post_id ) ) {
+		return true;
+	}
+
+	$elementor_data = get_post_meta( $post_id, '_elementor_data', true );
+	$elementor_data = is_string( $elementor_data ) ? trim( $elementor_data ) : '';
+
+	return 'builder' === get_post_meta( $post_id, '_elementor_edit_mode', true )
+		&& ! in_array( $elementor_data, array( '', '[]', '{}' ), true );
 }
 
 /**

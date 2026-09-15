@@ -4,7 +4,7 @@ Theme URI: https://gitaakailash.com/
 Description: A modern, purpose-built child theme for Guru Nanak Gitaa Kailash Memorial Foundation.
 Author: Guru Nanak Gitaa Kailash Memorial Foundation
 Template: hello-elementor
-Version: 1.2.1
+Version: 1.2.2
 Text Domain: hello-elementor-child
 */
 
@@ -1193,6 +1193,10 @@ body.gk-charity-page {
 	min-height: 60vh;
 	padding: 85px 0 110px;
 	background: var(--gk-paper);
+}
+
+.gk-elementor-document {
+	min-height: 60vh;
 }
 
 .gk-entry {

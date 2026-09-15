@@ -10,6 +10,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header( 'charity' );
+
+if ( gk_child_uses_elementor_document( get_queried_object_id() ) ) {
+	?>
+	<main class="gk-elementor-document" id="main-content">
+		<?php
+		while ( have_posts() ) {
+			the_post();
+			the_content();
+		}
+		?>
+	</main>
+	<?php
+	get_footer( 'charity' );
+	return;
+}
 ?>
 <main id="main-content" data-gk-page="about">
 	<section class="gk-page-hero gk-page-hero--dark">

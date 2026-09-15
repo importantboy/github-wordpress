@@ -320,10 +320,12 @@ body.gk-charity-page {
 	grid-template-columns: minmax(0, 1fr) minmax(240px, 310px);
 	align-items: center;
 	gap: clamp(40px, 7vw, 110px);
+	min-width: 0;
 }
 
 .gk-hero__content {
 	max-width: 720px;
+	min-width: 0;
 	text-shadow: 0 3px 32px rgba(3, 18, 16, 0.28);
 }
 
@@ -367,6 +369,10 @@ body.gk-charity-page {
 .gk-display em {
 	color: var(--gk-saffron-light);
 	font-weight: inherit;
+}
+
+.gk-display__line {
+	display: block;
 }
 
 .gk-hero__lead {
@@ -469,6 +475,7 @@ body.gk-charity-page {
 	align-items: center;
 	gap: 15px;
 	width: 100%;
+	min-width: 0;
 	margin-bottom: 2px;
 	padding: 17px 18px;
 	border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1505,7 +1512,8 @@ body.gk-charity-page {
 	}
 
 	.gk-display {
-		font-size: clamp(43px, 13.5vw, 61px);
+		font-size: clamp(41px, 12.7vw, 55px);
+		line-height: 1;
 	}
 
 	.gk-hero {

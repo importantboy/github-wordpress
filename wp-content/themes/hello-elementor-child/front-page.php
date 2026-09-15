@@ -21,7 +21,7 @@ get_header( 'charity' );
 		<div class="gk-container gk-hero__grid">
 			<div class="gk-hero__content">
 				<p class="gk-eyebrow">Seva · Dignity · Lasting change</p>
-				<h1 class="gk-display" id="gk-hero-title">Where care becomes a <em>path forward.</em></h1>
+				<h1 class="gk-display" id="gk-hero-title"><span class="gk-display__line">Where care</span><span class="gk-display__line">becomes a</span><em class="gk-display__line">path forward.</em></h1>
 				<p class="gk-hero__lead">We bring practical support, trusted partnerships, and human compassion to communities across North India—so every child, student, and family can move forward with dignity.</p>
 				<div class="gk-actions">
 					<a class="gk-button gk-button--primary" href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>">Explore our work <span class="gk-arrow" aria-hidden="true">↗</span></a>

@@ -4,7 +4,7 @@ Theme URI: https://gitaakailash.com/
 Description: A modern, purpose-built child theme for Guru Nanak Gitaa Kailash Memorial Foundation.
 Author: Guru Nanak Gitaa Kailash Memorial Foundation
 Template: hello-elementor
-Version: 1.2.0
+Version: 1.2.1
 Text Domain: hello-elementor-child
 */
 
@@ -317,9 +317,9 @@ body.gk-charity-page {
 	position: relative;
 	z-index: 2;
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(240px, 310px);
+	grid-template-columns: minmax(0, 1fr);
 	align-items: center;
-	gap: clamp(40px, 7vw, 110px);
+	gap: 0;
 	min-width: 0;
 }
 
@@ -469,57 +469,6 @@ body.gk-charity-page {
 	content: "";
 }
 
-.gk-hero__promise {
-	align-self: end;
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	width: 100%;
-	min-width: 0;
-	margin-bottom: 2px;
-	padding: 17px 18px;
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	border-radius: 18px;
-	background: rgba(7, 35, 31, 0.42);
-	box-shadow: 0 20px 45px rgba(2, 16, 14, 0.19);
-	backdrop-filter: blur(14px);
-}
-
-.gk-hero__promise-mark {
-	display: grid;
-	place-items: center;
-	width: 43px;
-	height: 43px;
-	border-radius: 50%;
-	background: var(--gk-saffron);
-	color: var(--gk-forest-deep);
-	font-size: 17px;
-	box-shadow: 0 0 0 6px rgba(239, 141, 50, 0.11);
-	animation: gk-hero-mark 4s ease-in-out infinite;
-}
-
-.gk-hero__promise strong,
-.gk-hero__promise span {
-	display: block;
-}
-
-.gk-hero__promise strong {
-	font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
-	font-size: 20px;
-	font-weight: 400;
-	line-height: 1.1;
-}
-
-.gk-hero__promise div > span {
-	margin-top: 5px;
-	color: rgba(255, 255, 255, 0.68);
-	font-size: 10px;
-	font-weight: 750;
-	line-height: 1.45;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-}
-
 .gk-hero__scroll {
 	position: absolute;
 	z-index: 3;
@@ -555,7 +504,6 @@ body.gk-charity-page {
 
 .gk-hero.has-motion .gk-hero__media,
 .gk-hero.has-motion .gk-hero__content > *,
-.gk-hero.has-motion .gk-hero__promise,
 .gk-hero.has-motion .gk-hero__scroll {
 	opacity: 0;
 }
@@ -581,11 +529,6 @@ body.gk-charity-page {
 	transition-delay: 400ms;
 }
 
-.gk-hero.has-motion .gk-hero__promise {
-	transform: translateY(18px);
-	transition: opacity 700ms 520ms ease, transform 800ms 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
 .gk-hero.has-motion .gk-hero__scroll {
 	transform: translate(-50%, 12px);
 	transition: opacity 600ms 720ms ease, transform 700ms 720ms ease;
@@ -593,13 +536,11 @@ body.gk-charity-page {
 
 .gk-hero.has-motion.is-hero-ready .gk-hero__media,
 .gk-hero.has-motion.is-hero-ready .gk-hero__content > *,
-.gk-hero.has-motion.is-hero-ready .gk-hero__promise,
 .gk-hero.has-motion.is-hero-ready .gk-hero__scroll {
 	opacity: 1;
 }
 
-.gk-hero.has-motion.is-hero-ready .gk-hero__content > *,
-.gk-hero.has-motion.is-hero-ready .gk-hero__promise {
+.gk-hero.has-motion.is-hero-ready .gk-hero__content > * {
 	transform: translateY(0);
 }
 
@@ -624,17 +565,6 @@ body.gk-charity-page {
 
 	100% {
 		opacity: 1;
-	}
-}
-
-@keyframes gk-hero-mark {
-	0%,
-	100% {
-		transform: scale(1) rotate(0);
-	}
-
-	50% {
-		transform: scale(1.08) rotate(8deg);
 	}
 }
 
@@ -1347,11 +1277,6 @@ body.gk-charity-page {
 		text-align: center;
 	}
 
-	.gk-hero__grid {
-		grid-template-columns: minmax(0, 1fr) minmax(220px, 260px);
-		gap: 45px;
-	}
-
 	.gk-trust-strip__inner {
 		grid-template-columns: repeat(3, 1fr);
 	}
@@ -1416,12 +1341,6 @@ body.gk-charity-page {
 	.gk-goals__top,
 	.gk-donate__panel {
 		grid-template-columns: 1fr;
-	}
-
-	.gk-hero__promise {
-		justify-self: start;
-		width: min(100%, 350px);
-		margin-top: 30px;
 	}
 
 	.gk-section-heading {
@@ -1539,10 +1458,6 @@ body.gk-charity-page {
 		gap: 8px;
 		margin-top: 28px;
 		font-size: 10px;
-	}
-
-	.gk-hero__promise {
-		padding: 14px 15px;
 	}
 
 	.gk-hero__scroll {

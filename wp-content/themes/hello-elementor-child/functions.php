@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'GK_CHILD_THEME_VERSION', '1.2.0' );
+define( 'GK_CHILD_THEME_VERSION', '1.2.1' );
 
 /**
  * Load the child theme styles and small interaction script.

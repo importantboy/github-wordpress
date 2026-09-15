@@ -32,14 +32,6 @@ get_header( 'charity' );
 					<span>Serving communities across North India</span>
 				</div>
 			</div>
-
-			<aside class="gk-hero__promise" aria-label="Foundation promise">
-				<span class="gk-hero__promise-mark" aria-hidden="true">✦</span>
-				<div>
-					<strong>Compassion in action</strong>
-					<span>Child welfare · Healthcare · Education</span>
-				</div>
-			</aside>
 		</div>
 		<a class="gk-hero__scroll" href="#about" aria-label="Scroll to our story"><span aria-hidden="true"></span>Discover our story</a>
 	</section>

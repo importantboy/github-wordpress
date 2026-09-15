@@ -1,6 +1,41 @@
 ( function () {
 	'use strict';
 
+	const reducedMotion = window.matchMedia( '(prefers-reduced-motion: reduce)' );
+	const hero = document.querySelector( '[data-gk-hero]' );
+
+	if ( hero && ! reducedMotion.matches ) {
+		hero.classList.add( 'has-motion' );
+
+		window.requestAnimationFrame( () => {
+			window.requestAnimationFrame( () => hero.classList.add( 'is-hero-ready' ) );
+		} );
+
+		if ( window.matchMedia( '(pointer: fine)' ).matches ) {
+			let pointerFrame;
+
+			hero.addEventListener( 'pointermove', ( event ) => {
+				if ( pointerFrame ) {
+					window.cancelAnimationFrame( pointerFrame );
+				}
+
+				pointerFrame = window.requestAnimationFrame( () => {
+					const bounds = hero.getBoundingClientRect();
+					const x = ( event.clientX - bounds.left ) / bounds.width - 0.5;
+					const y = ( event.clientY - bounds.top ) / bounds.height - 0.5;
+
+					hero.style.setProperty( '--gk-hero-x', `${ x * -12 }px` );
+					hero.style.setProperty( '--gk-hero-y', `${ y * -8 }px` );
+				} );
+			} );
+
+			hero.addEventListener( 'pointerleave', () => {
+				hero.style.setProperty( '--gk-hero-x', '0px' );
+				hero.style.setProperty( '--gk-hero-y', '0px' );
+			} );
+		}
+	}
+
 	const toggle = document.querySelector( '[data-nav-toggle]' );
 	const nav = document.querySelector( '[data-nav]' );
 
@@ -31,7 +66,7 @@
 
 	const revealItems = document.querySelectorAll( '.gk-reveal' );
 
-	if ( 'IntersectionObserver' in window && ! window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
+	if ( 'IntersectionObserver' in window && ! reducedMotion.matches ) {
 		revealItems.forEach( ( item ) => item.classList.add( 'gk-animate-ready' ) );
 
 		const observer = new IntersectionObserver(

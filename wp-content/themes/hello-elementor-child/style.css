@@ -4,7 +4,7 @@ Theme URI: https://gitaakailash.com/
 Description: A modern, purpose-built child theme for Guru Nanak Gitaa Kailash Memorial Foundation.
 Author: Guru Nanak Gitaa Kailash Memorial Foundation
 Template: hello-elementor
-Version: 1.1.0
+Version: 1.2.0
 Text Domain: hello-elementor-child
 */
 
@@ -251,32 +251,80 @@ body.gk-charity-page {
 
 .gk-hero {
 	position: relative;
+	display: flex;
+	align-items: center;
+	min-height: clamp(680px, calc(100svh - 128px), 860px);
 	overflow: hidden;
-	padding: 86px 0 74px;
-	background:
-		radial-gradient(circle at 92% 5%, rgba(239, 141, 50, 0.24), transparent 26%),
-		linear-gradient(135deg, var(--gk-forest-deep), var(--gk-forest));
+	isolation: isolate;
+	padding: 108px 0 122px;
+	background: var(--gk-forest-deep);
 	color: var(--gk-white);
+}
+
+.gk-hero__media,
+.gk-hero__veil,
+.gk-hero__light {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.gk-hero__media {
+	z-index: -3;
+	inset: -3%;
+	transform: translate3d(var(--gk-hero-x, 0), var(--gk-hero-y, 0), 0);
+	transition: opacity 1.1s ease, transform 1.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+	will-change: transform;
+}
+
+.gk-hero__media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 54%;
+	animation: gk-hero-breathe 16s ease-in-out infinite alternate;
+}
+
+.gk-hero__veil {
+	z-index: -2;
+	background:
+		linear-gradient(90deg, rgba(5, 25, 22, 0.92) 0%, rgba(6, 30, 26, 0.8) 33%, rgba(7, 29, 27, 0.3) 64%, rgba(7, 25, 25, 0.2) 100%),
+		linear-gradient(0deg, rgba(5, 24, 21, 0.76) 0%, transparent 42%, rgba(7, 24, 27, 0.22) 100%);
+}
+
+.gk-hero__light {
+	z-index: -1;
+	background: radial-gradient(circle at 79% 28%, rgba(255, 184, 100, 0.22), transparent 24%);
+	mix-blend-mode: screen;
+	animation: gk-hero-glow 7s ease-in-out infinite alternate;
 }
 
 .gk-hero::before {
 	position: absolute;
-	top: -230px;
-	left: -180px;
-	width: 540px;
-	height: 540px;
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	z-index: -1;
+	top: 13%;
+	right: 6%;
+	width: min(31vw, 460px);
+	aspect-ratio: 1;
+	border: 1px solid rgba(255, 255, 255, 0.12);
 	border-radius: 50%;
-	box-shadow: 0 0 0 70px rgba(255, 255, 255, 0.025), 0 0 0 140px rgba(255, 255, 255, 0.02);
+	box-shadow: 0 0 0 42px rgba(255, 255, 255, 0.025), 0 0 0 84px rgba(255, 255, 255, 0.018);
 	content: "";
+	opacity: 0.7;
 }
 
 .gk-hero__grid {
 	position: relative;
+	z-index: 2;
 	display: grid;
-	grid-template-columns: minmax(0, 0.95fr) minmax(420px, 0.85fr);
+	grid-template-columns: minmax(0, 1fr) minmax(240px, 310px);
 	align-items: center;
-	gap: clamp(50px, 7vw, 100px);
+	gap: clamp(40px, 7vw, 110px);
+}
+
+.gk-hero__content {
+	max-width: 720px;
+	text-shadow: 0 3px 32px rgba(3, 18, 16, 0.28);
 }
 
 .gk-eyebrow {
@@ -324,7 +372,7 @@ body.gk-charity-page {
 .gk-hero__lead {
 	max-width: 620px;
 	margin: 28px 0 0;
-	color: rgba(255, 255, 255, 0.74);
+	color: rgba(255, 255, 255, 0.84);
 	font-size: clamp(17px, 2vw, 20px);
 	line-height: 1.7;
 }
@@ -388,78 +436,214 @@ body.gk-charity-page {
 	line-height: 1;
 }
 
-.gk-hero__visual {
-	position: relative;
-	min-height: 590px;
+.gk-hero__assurance {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px 24px;
+	margin-top: 34px;
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 12px;
+	font-weight: 750;
+	letter-spacing: 0.065em;
+	text-transform: uppercase;
 }
 
-.gk-hero__main-image {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 88%;
-	height: 520px;
-	overflow: hidden;
-	border: 1px solid rgba(255, 255, 255, 0.16);
-	border-radius: 150px 24px 150px 24px;
-	box-shadow: 0 32px 90px rgba(0, 0, 0, 0.3);
+.gk-hero__assurance span {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
 }
 
-.gk-hero__main-image img {
+.gk-hero__assurance span::before {
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: var(--gk-saffron-light);
+	box-shadow: 0 0 0 4px rgba(255, 183, 103, 0.12);
+	content: "";
+}
+
+.gk-hero__promise {
+	align-self: end;
+	display: flex;
+	align-items: center;
+	gap: 15px;
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	margin-bottom: 2px;
+	padding: 17px 18px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 18px;
+	background: rgba(7, 35, 31, 0.42);
+	box-shadow: 0 20px 45px rgba(2, 16, 14, 0.19);
+	backdrop-filter: blur(14px);
 }
 
-.gk-hero__small-image {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 43%;
-	aspect-ratio: 1 / 1.08;
-	overflow: hidden;
-	border: 8px solid var(--gk-forest);
-	border-radius: 24px 100px 24px 24px;
-	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-}
-
-.gk-hero__small-image img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.gk-hero__badge {
-	position: absolute;
-	right: 16px;
-	bottom: 8px;
+.gk-hero__promise-mark {
 	display: grid;
 	place-items: center;
-	width: 136px;
-	height: 136px;
-	padding: 16px;
+	width: 43px;
+	height: 43px;
 	border-radius: 50%;
 	background: var(--gk-saffron);
 	color: var(--gk-forest-deep);
-	text-align: center;
-	transform: rotate(5deg);
+	font-size: 17px;
+	box-shadow: 0 0 0 6px rgba(239, 141, 50, 0.11);
+	animation: gk-hero-mark 4s ease-in-out infinite;
 }
 
-.gk-hero__badge strong {
+.gk-hero__promise strong,
+.gk-hero__promise span {
 	display: block;
+}
+
+.gk-hero__promise strong {
 	font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
-	font-size: 29px;
-	line-height: 1;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 1.1;
 }
 
-.gk-hero__badge span {
-	display: block;
-	margin-top: 6px;
+.gk-hero__promise div > span {
+	margin-top: 5px;
+	color: rgba(255, 255, 255, 0.68);
 	font-size: 10px;
-	font-weight: 900;
-	line-height: 1.25;
-	letter-spacing: 0.08em;
+	font-weight: 750;
+	line-height: 1.45;
+	letter-spacing: 0.06em;
 	text-transform: uppercase;
+}
+
+.gk-hero__scroll {
+	position: absolute;
+	z-index: 3;
+	bottom: 25px;
+	left: 50%;
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	color: rgba(255, 255, 255, 0.68);
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	transform: translateX(-50%);
+}
+
+.gk-hero__scroll > span {
+	position: relative;
+	width: 1px;
+	height: 30px;
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0.25);
+}
+
+.gk-hero__scroll > span::after {
+	position: absolute;
+	inset: 0;
+	background: var(--gk-saffron-light);
+	content: "";
+	transform: translateY(-100%);
+	animation: gk-scroll-line 2.2s ease-in-out infinite;
+}
+
+.gk-hero.has-motion .gk-hero__media,
+.gk-hero.has-motion .gk-hero__content > *,
+.gk-hero.has-motion .gk-hero__promise,
+.gk-hero.has-motion .gk-hero__scroll {
+	opacity: 0;
+}
+
+.gk-hero.has-motion .gk-hero__content > * {
+	transform: translateY(22px);
+	transition: opacity 700ms ease, transform 800ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.gk-hero.has-motion .gk-hero__content > :nth-child(2) {
+	transition-delay: 100ms;
+}
+
+.gk-hero.has-motion .gk-hero__content > :nth-child(3) {
+	transition-delay: 200ms;
+}
+
+.gk-hero.has-motion .gk-hero__content > :nth-child(4) {
+	transition-delay: 300ms;
+}
+
+.gk-hero.has-motion .gk-hero__content > :nth-child(5) {
+	transition-delay: 400ms;
+}
+
+.gk-hero.has-motion .gk-hero__promise {
+	transform: translateY(18px);
+	transition: opacity 700ms 520ms ease, transform 800ms 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.gk-hero.has-motion .gk-hero__scroll {
+	transform: translate(-50%, 12px);
+	transition: opacity 600ms 720ms ease, transform 700ms 720ms ease;
+}
+
+.gk-hero.has-motion.is-hero-ready .gk-hero__media,
+.gk-hero.has-motion.is-hero-ready .gk-hero__content > *,
+.gk-hero.has-motion.is-hero-ready .gk-hero__promise,
+.gk-hero.has-motion.is-hero-ready .gk-hero__scroll {
+	opacity: 1;
+}
+
+.gk-hero.has-motion.is-hero-ready .gk-hero__content > *,
+.gk-hero.has-motion.is-hero-ready .gk-hero__promise {
+	transform: translateY(0);
+}
+
+.gk-hero.has-motion.is-hero-ready .gk-hero__scroll {
+	transform: translate(-50%, 0);
+}
+
+@keyframes gk-hero-breathe {
+	0% {
+		transform: scale(1.035) translate3d(-0.35%, -0.2%, 0);
+	}
+
+	100% {
+		transform: scale(1.095) translate3d(0.45%, 0.35%, 0);
+	}
+}
+
+@keyframes gk-hero-glow {
+	0% {
+		opacity: 0.55;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes gk-hero-mark {
+	0%,
+	100% {
+		transform: scale(1) rotate(0);
+	}
+
+	50% {
+		transform: scale(1.08) rotate(8deg);
+	}
+}
+
+@keyframes gk-scroll-line {
+	0% {
+		transform: translateY(-100%);
+	}
+
+	45%,
+	55% {
+		transform: translateY(0);
+	}
+
+	100% {
+		transform: translateY(100%);
+	}
 }
 
 .gk-trust-strip {
@@ -1157,21 +1341,8 @@ body.gk-charity-page {
 	}
 
 	.gk-hero__grid {
-		grid-template-columns: 1fr 0.8fr;
+		grid-template-columns: minmax(0, 1fr) minmax(220px, 260px);
 		gap: 45px;
-	}
-
-	.gk-hero__visual {
-		min-height: 500px;
-	}
-
-	.gk-hero__main-image {
-		height: 445px;
-	}
-
-	.gk-hero__badge {
-		width: 116px;
-		height: 116px;
 	}
 
 	.gk-trust-strip__inner {
@@ -1218,7 +1389,18 @@ body.gk-charity-page {
 	}
 
 	.gk-hero {
-		padding-top: 66px;
+		min-height: 720px;
+		padding: 78px 0 112px;
+	}
+
+	.gk-hero__media img {
+		object-position: 62% center;
+	}
+
+	.gk-hero__veil {
+		background:
+			linear-gradient(90deg, rgba(5, 25, 22, 0.92) 0%, rgba(6, 30, 26, 0.75) 52%, rgba(7, 29, 27, 0.28) 100%),
+			linear-gradient(0deg, rgba(5, 24, 21, 0.78) 0%, transparent 55%, rgba(7, 24, 27, 0.2) 100%);
 	}
 
 	.gk-hero__grid,
@@ -1229,14 +1411,10 @@ body.gk-charity-page {
 		grid-template-columns: 1fr;
 	}
 
-	.gk-hero__visual {
-		width: min(100%, 590px);
-		min-height: 570px;
-		margin: 8px auto 0;
-	}
-
-	.gk-hero__main-image {
-		height: 510px;
+	.gk-hero__promise {
+		justify-self: start;
+		width: min(100%, 350px);
+		margin-top: 30px;
 	}
 
 	.gk-section-heading {
@@ -1327,38 +1505,40 @@ body.gk-charity-page {
 	}
 
 	.gk-display {
-		font-size: clamp(45px, 14vw, 63px);
+		font-size: clamp(43px, 13.5vw, 61px);
 	}
 
-	.gk-hero__visual {
-		min-height: 455px;
+	.gk-hero {
+		min-height: 760px;
+		padding: 72px 0 118px;
 	}
 
-	.gk-hero__main-image {
-		width: 92%;
-		height: 405px;
-		border-radius: 95px 20px 95px 20px;
+	.gk-hero__media {
+		inset: -2%;
 	}
 
-	.gk-hero__small-image {
-		width: 45%;
-		border-width: 5px;
-		border-radius: 18px 60px 18px 18px;
+	.gk-hero__media img {
+		object-position: 68% center;
 	}
 
-	.gk-hero__badge {
-		right: 0;
-		width: 98px;
-		height: 98px;
-		padding: 10px;
+	.gk-hero__lead {
+		font-size: 16px;
+		line-height: 1.6;
 	}
 
-	.gk-hero__badge strong {
-		font-size: 23px;
+	.gk-hero__assurance {
+		display: grid;
+		gap: 8px;
+		margin-top: 28px;
+		font-size: 10px;
 	}
 
-	.gk-hero__badge span {
-		font-size: 8px;
+	.gk-hero__promise {
+		padding: 14px 15px;
+	}
+
+	.gk-hero__scroll {
+		bottom: 22px;
 	}
 
 	.gk-trust-strip__inner {

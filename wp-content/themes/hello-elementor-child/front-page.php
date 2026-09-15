@@ -12,9 +12,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header( 'charity' );
 ?>
 <main id="main-content" data-gk-site="foundation-redesign-v1">
-	<section class="gk-hero" aria-labelledby="gk-hero-title">
+	<section class="gk-hero" aria-labelledby="gk-hero-title" data-gk-hero>
+		<div class="gk-hero__media" aria-hidden="true">
+			<img src="<?php echo esc_url( gk_child_image_url( 'mount-kailash-hero-v2.webp' ) ); ?>" alt="" width="1672" height="941" fetchpriority="high">
+		</div>
+		<div class="gk-hero__veil" aria-hidden="true"></div>
+		<div class="gk-hero__light" aria-hidden="true"></div>
 		<div class="gk-container gk-hero__grid">
-			<div class="gk-hero__content gk-reveal">
+			<div class="gk-hero__content">
 				<p class="gk-eyebrow">Seva · Dignity · Lasting change</p>
 				<h1 class="gk-display" id="gk-hero-title">Where care becomes a <em>path forward.</em></h1>
 				<p class="gk-hero__lead">We bring practical support, trusted partnerships, and human compassion to communities across North India—so every child, student, and family can move forward with dignity.</p>
@@ -22,20 +27,21 @@ get_header( 'charity' );
 					<a class="gk-button gk-button--primary" href="<?php echo esc_url( gk_child_page_url( 'our-work' ) ); ?>">Explore our work <span class="gk-arrow" aria-hidden="true">↗</span></a>
 					<a class="gk-button gk-button--ghost" href="<?php echo esc_url( gk_child_page_url( 'donate' ) ); ?>">Support a cause</a>
 				</div>
+				<div class="gk-hero__assurance" aria-label="Foundation focus">
+					<span>Registered charitable trust</span>
+					<span>Serving communities across North India</span>
+				</div>
 			</div>
 
-			<div class="gk-hero__visual gk-reveal" aria-label="Foundation healthcare and child welfare initiatives">
-				<div class="gk-hero__main-image">
-					<img src="<?php echo esc_url( gk_child_image_url( 'healthcare-camp.webp' ) ); ?>" alt="Community members receiving care at a foundation health camp" width="768" height="576" fetchpriority="high">
+			<aside class="gk-hero__promise" aria-label="Foundation promise">
+				<span class="gk-hero__promise-mark" aria-hidden="true">✦</span>
+				<div>
+					<strong>Compassion in action</strong>
+					<span>Child welfare · Healthcare · Education</span>
 				</div>
-				<div class="gk-hero__small-image">
-					<img src="<?php echo esc_url( gk_child_image_url( 'child-welfare.webp' ) ); ?>" alt="Children holding hands outdoors" width="768" height="576">
-				</div>
-				<div class="gk-hero__badge" aria-label="Working toward 2030">
-					<div><strong>2030</strong><span>Our shared horizon</span></div>
-				</div>
-			</div>
+			</aside>
 		</div>
+		<a class="gk-hero__scroll" href="#about" aria-label="Scroll to our story"><span aria-hidden="true"></span>Discover our story</a>
 	</section>
 
 	<div class="gk-trust-strip" aria-label="Foundation 2030 goals">
